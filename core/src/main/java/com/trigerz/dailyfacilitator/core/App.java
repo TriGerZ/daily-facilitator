@@ -1,10 +1,10 @@
-package com.trigerz.daily-facilitator;
+package com.trigerz.dailyfacilitator.core;
 
 /**
  * Hello world!
  *
  */
-public class App 
+public class App
 {
     public static void main( String[] args )
     {
