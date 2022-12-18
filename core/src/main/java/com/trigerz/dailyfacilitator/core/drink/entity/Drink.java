@@ -12,6 +12,6 @@ import java.io.Serializable;
 @Data
 public class Drink implements Serializable {
 
-	private long id;
-	private String name;
+    private long id;
+    private String name;
 }

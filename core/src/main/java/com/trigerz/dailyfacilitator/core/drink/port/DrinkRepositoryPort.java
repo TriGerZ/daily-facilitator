@@ -5,6 +5,7 @@ import com.trigerz.dailyfacilitator.core.drink.entity.Drink;
 import java.util.Collection;
 
 public interface DrinkRepositoryPort {
-	public Collection<Drink> GetAllDrinks();
-	public void CreateDrink(Drink drink);
+    Collection<Drink> GetAllDrinks();
+
+    Drink CreateDrink(Drink drink);
 }
