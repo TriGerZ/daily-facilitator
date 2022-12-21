@@ -25,17 +25,26 @@ public class CreateDrinkTest {
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecuteWithId() throws Exception {
         //Given
         Drink drink = DrinkFixture.aDrinkTeaGrandmere();
-
+		when(drinkRepositoryPort.CreateDrink(any(Drink.class))).thenReturn(drink);
         //When
-        when(drinkRepositoryPort.CreateDrink(any(Drink.class))).thenReturn(drink);
-
+		Drink createdDrink= createDrink.execute(drink);
         //Then
-        Drink createdDrink= createDrink.execute(drink);
         assertEquals(drink, createdDrink);
     }
+
+	@Test
+	public void testExecuteWithoutId() throws Exception {
+		//Given
+		Drink drink = DrinkFixture.aDrinkTeaLiptonWithoutId();
+		when(drinkRepositoryPort.CreateDrink(any(Drink.class))).thenReturn(drink);
+		//When
+		Drink createdDrink= createDrink.execute(drink);
+		//Then
+		assertEquals(drink, createdDrink);
+	}
 }
 
 //Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme
