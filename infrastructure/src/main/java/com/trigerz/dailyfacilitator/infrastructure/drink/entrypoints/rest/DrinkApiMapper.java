@@ -5,11 +5,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DrinkApiMapper {
-	public Drink toDrink(DrinkApi drinkApi){
-		return new Drink(drinkApi.getId(),drinkApi.getName());
+	public static Drink toDrink(DrinkApi drinkApi){
+		return new Drink(drinkApi.getId(),drinkApi.getName(), drinkApi.getBrand());
 	}
-	public DrinkApi toDrinkApi(Drink drink){
-		return new DrinkApi(drink.getId(),drink.getName());
+
+	public static Drink toDrinkWithoutId(DrinkApi drinkApi){
+		Drink drink = new Drink();
+		drink.setName(drinkApi.getName());
+		drink.setBrand(drinkApi.getBrand());
+		return drink;
+	}
+	public static DrinkApi toDrinkApi(Drink drink){
+		return new DrinkApi(drink.getId(),drink.getName(), drink.getBrand());
 
 	}
 }
