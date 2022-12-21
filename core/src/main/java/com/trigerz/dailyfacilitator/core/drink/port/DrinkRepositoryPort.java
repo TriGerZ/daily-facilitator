@@ -8,4 +8,8 @@ public interface DrinkRepositoryPort {
     Collection<Drink> GetAllDrinks();
 
     Drink CreateDrink(Drink drink);
+
+	Drink GetDrinkById(Long id);
+
+	Drink DeleteDrinkById(Long id);
 }

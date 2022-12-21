@@ -10,8 +10,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Drink implements Serializable {
-
+public class Drink {
     private long id;
     private String name;
+
+	private String brand;
 }
