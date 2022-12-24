@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class DrinkJpaMapper {
-	public Drink toDrink(DrinkJpa drinkJpa){
-		return new Drink(drinkJpa.getId(), drinkJpa.getName(), drinkJpa.getBrand());
+public final class DrinkJpaMapper {
+	public static Drink toDrink(DrinkJpa drinkJpa){
+		return new Drink(drinkJpa.getUuid(),drinkJpa.getId(), drinkJpa.getName(), drinkJpa.getBrand());
 	}
 
-	public DrinkJpa toDrinkJpa(Drink drink){
-		return new DrinkJpa(drink.getId(), drink.getName(),drink.getBrand());
+	public static DrinkJpa toDrinkJpa(Drink drink){
+		return new DrinkJpa(drink.getUuid(),drink.getId(), drink.getName(),drink.getBrand());
 	}
 }

@@ -5,12 +5,15 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class DrinkApi {
-
 	@Id
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private UUID uuid;
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Long id;
 	private String name;

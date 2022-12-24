@@ -6,9 +6,12 @@ import com.trigerz.dailyfacilitator.infrastructure.drink.entrypoints.rest.DrinkA
 import com.trigerz.dailyfacilitator.infrastructure.drink.persistence.DrinkJpa;
 import com.trigerz.dailyfacilitator.infrastructure.drink.persistence.DrinkJpaRepository;
 import com.trigerz.dailyfacilitator.infrastructure.drink.persistence.jpa.mapper.DrinkJpaMapper;
+import com.trigerz.dailyfacilitator.infrastructure.exception.DataNotFoundException;
 import com.trigerz.dailyfacilitator.infrastructure.fixtures.DrinkFixture;
 import com.trigerz.dailyfacilitator.infrastructure.fixtures.DrinkJpaFixture;
 import com.trigerz.dailyfacilitator.infrastructure.utils.DrinkMatcher;
+import org.hibernate.id.IdentifierGenerationException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,12 +24,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestComponent;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 @RunWith(SpringRunner.class)
@@ -70,18 +76,18 @@ public class DrinkRepositoryPortAdapterTest {
 		//When
 		Drink result = drinkRepositoryPortAdapter.CreateDrink(drinkTeaLipton);
 		//Then
-        assertEquals(DrinkFixture.aDrinkTeaLipton(), result);
+        assertEquals(DrinkFixture.aDrinkTeaLipton().getName(), result.getName());
+		assertEquals(DrinkFixture.aDrinkTeaLipton().getBrand(), result.getBrand());
     }
 
-	@Test
+	@Test(expected = JpaSystemException.class)
 	public void testCreateDrinkWithoutId() throws Exception {
 		//Given
 		Drink drinkTeaLiptonWithoutId = DrinkFixture.aDrinkTeaLiptonWithoutId();
 		//When
 		Drink result = drinkRepositoryPortAdapter.CreateDrink(drinkTeaLiptonWithoutId);
 		//Then
-		assertEquals(DrinkFixture.aDrinkTeaLiptonWithoutId().getName(), result.getName());
-		assertEquals(DrinkFixture.aDrinkTeaLiptonWithoutId().getBrand(), result.getBrand());
+
 	}
 
 	@Test
@@ -90,9 +96,33 @@ public class DrinkRepositoryPortAdapterTest {
 		Drink expectedResult = DrinkFixture.aDrinkTeaLipton();
 		drinkRepositoryPortAdapter.CreateDrink(expectedResult);
 		//When
-		Drink result = drinkRepositoryPortAdapter.GetDrinkById(expectedResult.getId());
+		Drink result = drinkRepositoryPortAdapter.GetDrinkById(expectedResult.getUuid());
 		//Then
-		assertEquals(expectedResult,result);
+		assertEquals(expectedResult.getName(), result.getName());
+		assertEquals(expectedResult.getBrand(), result.getBrand());
+	}
+
+	@Test(expected = DataNotFoundException.class)
+	public void testDeleteDrinkById_Exists_ThenDeleteAndVoid() throws Exception{
+		//Given
+		Drink createdDrink = drinkRepositoryPortAdapter.CreateDrink(DrinkFixture.aDrinkTeaLipton());
+
+		//When
+		drinkRepositoryPortAdapter.DeleteDrinkById(createdDrink.getUuid());
+		Drink drinkShouldNotExist = drinkRepositoryPortAdapter.GetDrinkById(createdDrink.getUuid());
+		assertNull(drinkShouldNotExist);
+	}
+
+	@Test(expected = DataNotFoundException.class)
+	public void testDeleteDrinkById_NotExist_ThenDataNotFoundException() throws Exception{
+		//Given
+		UUID uuid = UUID.randomUUID();
+
+		//When
+		drinkRepositoryPortAdapter.DeleteDrinkById(UUID.randomUUID());
+
+		//Then
+		// We should get a DataNotFoundException
 	}
 }
 

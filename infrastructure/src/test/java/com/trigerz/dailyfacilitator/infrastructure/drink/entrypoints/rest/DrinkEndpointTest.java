@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collection;
@@ -49,11 +51,11 @@ public class DrinkEndpointTest {
 		//Given
 		DrinkApi drinkApi = DrinkApiMapper.toDrinkApi(DrinkFixture.aDrinkTeaGrandmere());
 		//When
-		DrinkApi result=drinkEndpoint.createDrink(drinkApi);
+		ResponseEntity<EntityModel<DrinkApi>> result=drinkEndpoint.createDrink(drinkApi);
 		//Then
 		Assert.assertTrue(DrinkMatcher.hasDrinkHaveSamePropertiesExceptId(
 				DrinkApiMapper.toDrink(drinkApi),
-				DrinkApiMapper.toDrink(result)));
+				DrinkApiMapper.toDrink(result.getBody().getContent())));
     }
 
 	@Test
@@ -61,11 +63,11 @@ public class DrinkEndpointTest {
 		//Given
 		DrinkApi drinkApi = DrinkApiMapper.toDrinkApi(DrinkFixture.aDrinkTeaLiptonWithoutId());
 		//When
-		DrinkApi result=drinkEndpoint.createDrink(drinkApi);
+		ResponseEntity<EntityModel<DrinkApi>> result=drinkEndpoint.createDrink(drinkApi);
 		//Then
 		Assert.assertTrue(DrinkMatcher.hasDrinkHaveSamePropertiesExceptId(
 				DrinkApiMapper.toDrink(drinkApi),
-				DrinkApiMapper.toDrink(result)));
+				DrinkApiMapper.toDrink(result.getBody().getContent())));
 	}
 }
 

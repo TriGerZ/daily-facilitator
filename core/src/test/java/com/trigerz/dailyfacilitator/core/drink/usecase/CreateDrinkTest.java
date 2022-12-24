@@ -30,7 +30,7 @@ public class CreateDrinkTest {
         Drink drink = DrinkFixture.aDrinkTeaGrandmere();
 		when(drinkRepositoryPort.CreateDrink(any(Drink.class))).thenReturn(drink);
         //When
-		Drink createdDrink= createDrink.execute(drink);
+		Drink createdDrink= createDrink.execute(drink.getName(), drink.getBrand());
         //Then
         assertEquals(drink, createdDrink);
     }
@@ -41,7 +41,7 @@ public class CreateDrinkTest {
 		Drink drink = DrinkFixture.aDrinkTeaLiptonWithoutId();
 		when(drinkRepositoryPort.CreateDrink(any(Drink.class))).thenReturn(drink);
 		//When
-		Drink createdDrink= createDrink.execute(drink);
+		Drink createdDrink= createDrink.execute(drink.getName(), drink.getBrand());
 		//Then
 		assertEquals(drink, createdDrink);
 	}

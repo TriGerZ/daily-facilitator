@@ -1,0 +1,9 @@
+CREATE SEQUENCE DRINK_ID_SEQ START WITH 1 INCREMENT BY 1;
+CREATE TABLE drink
+(
+	uuid  UUID NOT NULL,
+	id    BIGINT default nextval('DRINK_ID_SEQ'),
+	name  VARCHAR(255),
+	brand VARCHAR(255),
+	CONSTRAINT pk_drink PRIMARY KEY (uuid)
+);
